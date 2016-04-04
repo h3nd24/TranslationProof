@@ -1,0 +1,33 @@
+\documentclass[a4]{article}
+
+\begin{document}
+
+\section{File Contents}
+Apart from this file, the contents of this repositories are:
+\begin{description}
+  \item[Extended Paper.pdf] Contains the extended contents for the paper
+  \item[files/simpleapp.apk] A simple test app which contains no method calling and    
+    exception handling in the program. This app is compiled using the option of 
+    no-optimize.
+  \item[files/apkreader.apk] A prototype of the proof of concept. This app can read other
+    app's APK and then check it against the certificate. The checked app can not contain
+    method calling and exception handling. The app must also compiled with the flag
+    no-optimize.
+  \item[files/APKReader/] The source code for the prototype. Two main contents of this
+    app are the component to parse another file's apk, and the type check it.
+  \item[files/dx\_ocaml/] The source code for the OCaml files to provide a certificate
+    for an app given its classes source. This component will first parse the JVM class,
+    do a naive JVM type inference, then translate the certificate. 
+  \item[files/SimpleApp/] The source for the test app.
+\end{description}
+
+\section{Instructions for Constructing Certificate}
+
+\section{Instructions for Compilation}
+\subsection{APK Reader}
+\subsection{Test application}
+\subsection{Certificate Translation}
+
+\section{Instructions for Type Checking}
+
+\end{document}
