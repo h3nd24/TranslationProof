@@ -1,0 +1,72 @@
+package anu.rsise.apkreader;
+
+import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.TextView;
+
+import java.util.Enumeration;
+import java.util.ArrayList;
+import java.util.zip.*;
+
+/**
+ * Created by Hendra on 12/31/2015.
+ */
+public class ContentAdapter extends BaseAdapter{
+    private Context mContext;
+    private ZipEntry data[];
+
+    // Constructor
+    public ContentAdapter(Context c, String packageName){
+        mContext = c;
+
+        final PackageManager pm = c.getPackageManager();
+        try {
+            ApplicationInfo ai = pm.getApplicationInfo(packageName, PackageManager.GET_META_DATA);
+            ZipFile zipFile = new ZipFile (ai.sourceDir);
+            Enumeration<? extends ZipEntry> entries = zipFile.entries();
+            ArrayList<ZipEntry> arrEntries = new ArrayList();
+
+            while(entries.hasMoreElements()){
+                arrEntries.add(entries.nextElement());
+            }
+            data = arrEntries.toArray(new ZipEntry[arrEntries.size()]);
+        } catch (Exception e) {e.printStackTrace();}
+    }
+
+    @Override
+    public int getCount() {
+        return data.length;
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return data[position];
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return 0;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        TextView textView;
+
+        if (convertView == null) {
+            // if it's not recycled, initialize some attribute
+            textView = new TextView(mContext);
+            /*textView.setLayoutParams(new GridView.LayoutParams(1000, 150));*/
+            /*textView.setScaleType(TextView.ScaleType.CENTER_CROP);*/
+            /*textView.setPadding(8, 8, 8, 8);*/
+        } else {
+            textView = (TextView) convertView;
+        }
+
+        textView.setText("[" + data[position].getName() + "]");
+        return textView;
+    }
+}
