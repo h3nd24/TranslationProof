@@ -39,17 +39,17 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="number"
         android:ems="10"
         android:id="@+id/txtOpr1"
         android:layout_marginTop="32dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:inputType="text" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="number"
+        android:inputType="text"
         android:ems="10"
         android:id="@+id/txtOpr2"
         android:layout_above="@+id/lblEqual"
@@ -65,5 +65,5 @@
         android:onClick="btnCalculate_click"
         android:layout_below="@+id/lblResult"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="54dp"/>
+        android:layout_marginTop="54dp" />
 </RelativeLayout>
