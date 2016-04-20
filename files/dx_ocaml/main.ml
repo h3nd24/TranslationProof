@@ -118,10 +118,11 @@ let translate_cert (object_level:int) (c:JVM_Class.t) (m:JVM_Method.t)
 	let nArgs = Utility.countArgs_from_desc (jvm_method_desc) in 
 	
 	(* JVM Simple Type Inference *)
-	Printf.printf "Starting type inference\n";
+	Printf.printf "Starting type inference for object level %d\n" (object_level);
 	let (jInsnList, jInsnMap) = Type_inference.infer_type (c) (m) (cert) (object_level)  
 	  (JVM_Cert.default_level cert)in
 	Printf.printf "Finished type inference\n";
+	List.iter (fun h -> Printf.printf "%s\n" (JVM_Instruction.to_string h)) jInsnList;
 	
 	Printf.printf "Method policy :\n %s\n" (MethodPolicy.to_string lvt);
 	
@@ -156,6 +157,7 @@ let translate_cert (object_level:int) (c:JVM_Class.t) (m:JVM_Method.t)
 	let lvl_pool = JVM_Cert.lvl_pool cert in
 	let new_methodCert_item = DEX_Method_cert.Item.create (Level_pool.level lvl_pool object_level) 
 	    (lvt) (new_dexTypeMap) in
+	Printf.printf "DEX Certificate\n%s" (DEX_BytecodeMethod_cert.to_string (DEX_Method_cert.Item.bytecodeMethod_cert new_methodCert_item));
 	  (new_dex_regMap, new_dex_junMap, new_methodCert_item) 
 ;;
 

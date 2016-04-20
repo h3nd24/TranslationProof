@@ -1,5 +1,7 @@
 package anu.rsise.typeChecker;
 
+import android.util.Log;
+
 import anu.rsise.certParser.*;
 import anu.rsise.dexParser.container.*;
 import anu.rsise.dexParser.container.ClassContainer.*;
@@ -48,10 +50,11 @@ public class TypeChecker {
 		BytecodeMethod bm_cert = m_cert.get_bytecodeMethod(object_level);
 		MethodPolicy policy = bm_cert.policy();
 
-		System.out.print ("Checking ");
+        //Log.d("APKReader", "Checking" + "[" + object_level + "]" + policy.toString());
+		/*System.out.print ("Checking ");
 		System.out.print (m_cert.class_name() + m_cert.name() + ":" + m_cert.desc());
 		System.out.println (" for policy ");
-		System.out.println (policy.toString());
+		System.out.println (policy.toString());*/
 
 		if (bm.register_size < policy.localVariable_size()) {
 			return new Result(false, "The number of local registers are less than the policy");
@@ -408,6 +411,8 @@ public class TypeChecker {
 
 					Typing.RT rt = typeInfo.get_rt();
 	      /* checking the type registers (except the result register) */
+					//Log.d("APKReader", label + " " + rt.toString());
+					//Log.d("APKReader", label + " " + succ_typing.get_rt().toString());
 					if (!rt.leq(succ_typing.get_rt(), localN, lvl_rel))
 						return new Result (false, error_message(failedRT, label, "Invoke"));
 
@@ -417,6 +422,14 @@ public class TypeChecker {
 						ExtendedLevel target_kr = target_lvt.kr_at(0); /* kr[n] will always be the first */
 						ExtendedLevel res = ExtendedLevel.createSimple(se).lub(target_kr, lvl_rel);
 						ExtendedLevel expected_res = succ_typing.get_res();
+						/*if (label == 6) {
+							Log.d("APKReader", rt.toString());
+							Log.d("APKReader", ins.method_item.class_str + ins.method_item.	name_str +
+									ins.method_item.proto_item.shorty_desc);
+							Log.d("APKReader", ins.registers[0] + "[" + ko.toString() + "]" + target_lvt.toString() + " -> " + target_kr.toString());
+							Log.d("APKReader", target_kr.toString() + " " + se.toString());
+							Log.d("APKReader", (label + ": Invoke " + res.toString() + " - " + expected_res.toString() + " - " + Boolean.toString(res.leq(expected_res, lvl_rel))));
+						}*/
 						if (!res.leq(expected_res, lvl_rel))
 							return new Result (false, error_message ("Failed checking result register at ", label, "Invoke"));
 					}
@@ -513,7 +526,7 @@ public class TypeChecker {
 				{
 					Typing succ_typing = bm_cert.get_type (label + ins.read_count);
 					if (!typeInfo.get_rt().leq(succ_typing.get_rt(), localN, lvl_rel))
-						return new Result (false, error_message(failedConstraint, label, "CheckCast"));
+						return new Result (false, error_message(failedRT, label, "CheckCast"));
 					break;
 				}
 				case NewInstance :
@@ -570,7 +583,7 @@ public class TypeChecker {
 		return false;
 	}
 
-	public boolean typeCheck() {
+	public Result typeCheck() {
 		// for all method
 		//   there is a method with the same name and signature both in file and cert
 		//   with matching region, junction, se, and rt
@@ -589,10 +602,10 @@ public class TypeChecker {
 				String method_desc = cdi.class_data.virtual_methods[j].method.proto_item.shorty_desc;
 				// skipping basic Android and Java classes, and default classes
 				if (skipMethods(class_name, method_name)) continue;
-
+				//Log.d("APKReader", "Virtual Methods");
 				if (!_cert.containMethod(class_name, method_name, method_desc) ) {
-					System.out.println("No matching method for " + class_name + method_name + method_desc);
-					return false;
+					return new Result(false,
+					  "No matching method for " + class_name + method_name + method_desc);
 				}
 
 				MethodCert mc = _cert.method(class_name, method_name, method_desc);
@@ -604,7 +617,8 @@ public class TypeChecker {
 				{
 					// traverse the instructions (per object level) and do type checking
 					Result res = traverseBytecode_perLevel(code, mc, _cert.lvl_rel(), x.id());
-					if (!res.success()) {System.out.println(res.comment());return false;}
+					if (!res.success()) return res;
+					//if (!res.success()) {System.out.println(res.comment());return false;}
 				}
 			}
 
@@ -618,10 +632,11 @@ public class TypeChecker {
 
 				// skipping basic Android and Java classes, and default classes
 				if (skipMethods(class_name, method_name)) continue;
-
+				//Log.d("APKReader", "Direct Methods");
 				if (!_cert.containMethod(class_name, method_name, method_desc) ) {
-					System.out.println("No matching method for " + class_name + method_name + method_desc);
-					return false;
+					return new Result (false,
+					  "No matching method for " + class_name + method_name + method_desc);
+					//return false;
 				}
 
 				MethodCert mc = _cert.method(class_name, method_name, method_desc);
@@ -633,10 +648,12 @@ public class TypeChecker {
 				{
 					// traverse the instructions (per object level) and do type checking
 					Result res = traverseBytecode_perLevel(code, mc, _cert.lvl_rel(), x.id());
-					if (!res.success()) {System.out.println(res.comment()); return false;}
+					if (!res.success()) return res;
+					//if (!res.success()) {System.out.println(res.comment()); return false;}
 				}
 			}
 		}
-		return true;
+		//Log.d("APKReader", "No comment but false?");
+		return new Result (true, "No Comment");
 	}
 }

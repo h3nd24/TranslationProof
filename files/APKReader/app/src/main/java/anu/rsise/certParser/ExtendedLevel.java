@@ -60,8 +60,8 @@ public abstract class ExtendedLevel {
   
   /* TODO : fix the mechanism of least upper bound for partial level */
   public ExtendedLevel lub (ExtendedLevel another, LevelRelationship lvl_rel) {
-	if (leq(another, lvl_rel)) return this;
-    return another;
+	if (leq(another, lvl_rel)) return another;
+    return this;
   }
   
   public abstract BasicLevel getBasicLevel();

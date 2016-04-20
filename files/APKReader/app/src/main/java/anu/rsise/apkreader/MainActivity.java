@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         TextView certTime_text = (TextView) findViewById(R.id.lblCertTime);
         TextView fileTime_text = (TextView) findViewById(R.id.lblDEXTime);
         TextView tcTime_text = (TextView) findViewById(R.id.lblTypeCheckTime);
+        TextView comment_text = (TextView) findViewById(R.id.lblComment);
 
         EditText input_name = (EditText) findViewById (R.id.txtName);
         String app_name = input_name.getText().toString(); /* anu.rsise.simpleapp */
@@ -156,11 +157,14 @@ public class MainActivity extends AppCompatActivity {
         fileTime_text.setText(Long.toString(t2 - t1));
 
         TypeChecker tc = new TypeChecker (cert, dexFile);
-        String result = tc.typeCheck() ? "True" : "False";
+        TypeChecker.Result res = tc.typeCheck();
+        //res = tc.typeCheck();
+        String result = res.success() ? "True" : "False";
 
         long t3 = System.currentTimeMillis();
         tcTime_text.setText(Long.toString(t3 - t2));
 
         result_text.setText(result);
+        comment_text.setText(res.comment());
     }
 }

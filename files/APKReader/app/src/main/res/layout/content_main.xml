@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/txtName"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="5dp"
         android:layout_alignRight="@+id/button"
         android:layout_alignEnd="@+id/button"
         android:layout_alignLeft="@+id/button"
@@ -39,23 +39,22 @@
         android:text="Result"
         android:layout_below="@+id/button"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="26dp" />
+        android:layout_marginTop="20dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/lblCertTime"
         android:text="Cert"
-        android:layout_below="@+id/txtResult"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="37dp" />
+        android:layout_alignTop="@+id/textView2"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/lblDEXTime"
         android:text="DEX"
-        android:layout_centerVertical="true"
+        android:layout_alignTop="@+id/textView3"
         android:layout_centerHorizontal="true" />
 
     <TextView
@@ -63,9 +62,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/lblTypeCheckTime"
         android:text="Type Check"
-        android:layout_below="@+id/lblDEXTime"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="41dp" />
+        android:layout_above="@+id/textView6"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -81,7 +79,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/textView2"
         android:text="Time to read certificate"
-        android:layout_alignTop="@+id/lblCertTime"
+        android:layout_below="@+id/textView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -90,7 +88,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/textView3"
         android:text="Time to read DEX file"
-        android:layout_alignTop="@+id/lblDEXTime"
+        android:layout_below="@+id/textView2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -99,7 +97,24 @@
         android:layout_height="wrap_content"
         android:id="@+id/textView4"
         android:text="Time to type check"
-        android:layout_alignTop="@+id/lblTypeCheckTime"
+        android:layout_below="@+id/textView3"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/lblComment"
+        android:text="Comment"
+        android:layout_below="@+id/textView6"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView6"
+        android:text="Comment"
+        android:layout_below="@+id/textView4"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
